@@ -161,6 +161,16 @@
 				this.contextPos.l = e.pageX
 				this.contextPos.t = e.pageY
 			},
+			reRenderTableLayout () {
+				let arr = []
+				for (let i = 0; i < this.tableData.cols * this.tableData.rows; i++) {
+					arr.push({
+						colSpan: '',
+						rowSpan: ''
+					})
+				}
+				this.tableData.layoutDetail = arr
+			},
 			menyItemCmd (cmd) {
 				let tableData = this.tableData
 				let startX = Math.min(this.startX, this.endX)
@@ -182,15 +192,20 @@
 					break
 					case 'delRow':
 					this.tableData.rows = this.tableData.rows - 1
+					// 行号 列号变化时候  需要重新渲染 this.tableData.layoutDetail
+					this.reRenderTableLayout()
 					break
 					case 'delCol':
 					this.tableData.cols = this.tableData.cols - 1
+					this.reRenderTableLayout()
 					break
 					case 'addRow':
 					this.tableData.rows = this.tableData.rows + 1
+					this.reRenderTableLayout()
 					break
 					case 'addCol':
 					this.tableData.cols = this.tableData.cols + 1
+					this.reRenderTableLayout()
 					break
 					case 'clearSelection':
 					this.clearSelection()
